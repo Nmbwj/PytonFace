@@ -1,0 +1,120 @@
+While I am using GPU: Python-3.12.3 torch-2.3.1+rocm6.0 CUDA:0 (AMD Radeon Graphics, 512MiB)
+______________________________________________________________________________________________________________________________________________________
+Python 3.12.3 (main, Apr 10 2024, 05:33:47) [GCC 13.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from ultralytics import YOLO
+>>> # Load a model
+>>> model = YOLO("yolov8n.yaml")  # build a new model from YAML
+>>> model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
+>>> model = YOLO("yolov8n.yaml").load("yolov8n.pt")  # build from YAML and transfer weights
+Transferred 355/355 items from pretrained weights
+>>> # Train the model
+>>> results = model.train(data="coco8.yaml", epochs=100, imgsz=640, device=0)
+Ultralytics YOLOv8.2.60 🚀 Python-3.12.3 torch-2.3.1+rocm6.0 CUDA:0 (AMD Radeon Graphics, 512MiB)
+
+...
+
+
+                   from  n    params  module                                       arguments                     
+  0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
+  1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
+  2                  -1  1      7360  ultralytics.nn.modules.block.C2f             [32, 32, 1, True]             
+  3                  -1  1     18560  ultralytics.nn.modules.conv.Conv             [32, 64, 3, 2]                
+  4                  -1  2     49664  ultralytics.nn.modules.block.C2f             [64, 64, 2, True]             
+  5                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
+  6                  -1  2    197632  ultralytics.nn.modules.block.C2f             [128, 128, 2, True]           
+  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
+  8                  -1  1    460288  ultralytics.nn.modules.block.C2f             [256, 256, 1, True]           
+  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 
+ 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 12                  -1  1    148224  ultralytics.nn.modules.block.C2f             [384, 128, 1]                 
+ 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 15                  -1  1     37248  ultralytics.nn.modules.block.C2f             [192, 64, 1]                  
+ 16                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]      
+
+...
+
+YOLOv8n summary: 225 layers, 3,157,200 parameters, 3,157,184 gradients, 8.9 GFLOPs
+
+Transferred 355/355 items from pretrained weights
+Freezing layer 'model.22.dfl.conv.weight'
+AMP: running Automatic Mixed Precision (AMP) checks with YOLOv8n...
+
+
+________________________________________________________________________________________________________________________________________________________________
+CPU utilization: It utilize CPU 100%, result from top command is below.
+
+root@naol-Vivobook-Go-E1404FA-E1404FA:/home/naol# top
+
+top - 09:51:29 up  1:20,  1 user,  load average: 1.24, 1.17, 1.09
+Tasks: 303 total,   2 running, 301 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  2.5 us, 11.9 sy,  0.0 ni, 85.5 id,  0.0 wa,  0.0 hi,  0.1 si,  0.0 st 
+MiB Mem :   7211.8 total,   1199.3 free,   3454.1 used,   2889.4 buff/cache     
+MiB Swap:   4096.0 total,   4095.5 free,      0.5 used.   3757.8 avail Mem 
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND             
+   9026 root      20   0 9613364 988.7m 555132 R 100.0  13.7   5:08.65 pt_main_thread      
+
+____________________________________________________________________________________________________________________________________________________________________
+
+While I am using CPU: 
+
+(MyEnv) root@naol-Vivobook-Go-E1404FA-E1404FA:/home/naol/python-work# python
+Python 3.12.3 (main, Apr 10 2024, 05:33:47) [GCC 13.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from ultralytics import YOLO
+>>> # Load a model
+>>> model = YOLO("yolov8n.yaml")  # build a new model from YAML
+>>> model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
+>>> model = YOLO("yolov8n.yaml").load("yolov8n.pt")  # build from YAML and transfer weights
+Transferred 355/355 items from pretrained weights
+>>> # Train the model
+>>> results = model.train(data="coco8.yaml", epochs=100, imgsz=640, device='cpu')
+Ultralytics YOLOv8.2.60 🚀 Python-3.12.3 torch-2.3.1+rocm6.0 CPU (AMD Ryzen 3 7320U with Radeon Graphics)
+
+...
+
+                  from  n    params  module                                       arguments                     
+  0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
+  1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
+  2                  -1  1      7360  ultralytics.nn.modules.block.C2f             [32, 32, 1, True]             
+  3                  -1  1     18560  ultralytics.nn.modules.conv.Conv             [32, 64, 3, 2]                
+  4                  -1  2     49664  ultralytics.nn.modules.block.C2f             [64, 64, 2, True]             
+  5                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
+  6                  -1  2    197632  ultralytics.nn.modules.block.C2f             [128, 128, 2, True]           
+  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
+  8                  -1  1    460288  ultralytics.nn.modules.block.C2f             [256, 256, 1, True]           
+  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 
+ 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 12                  -1  1    148224  ultralytics.nn.modules.block.C2f             [384, 128, 1]                 
+ 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 15                  -1  1     37248  ultralytics.nn.modules.block.C2f             [192, 64, 1]                  
+ 16                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+ 17            [-1, 12]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 18                  -1  1    123648  ultralytics.nn.modules.block.C2f             [192, 128, 1]                 
+ 19                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+ 20             [-1, 9]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 21                  -1  1    493056  ultralytics.nn.modules.block.C2f             [384, 256, 1]                 
+ 22        [15, 18, 21]  1    897664  ultralytics.nn.modules.head.Detect           [80, [64, 128, 256]]          
+YOLOv8n summary: 225 layers, 3,157,200 parameters, 3,157,184 gradients, 8.9 GFLOPs
+
+Transferred 355/355 items from pretrained weights
+Freezing layer 'model.22.dfl.conv.weight'
+train: Scanning /home/naol/python-work/datasets/coco8/labels/train.cache... 4 images, 0 backgrounds, 0 corrupt: 100%|██████████| 4/4 [00:00<?, ?it/s]
+val: Scanning /home/naol/python-work/datasets/coco8/labels/val.cache... 4 images, 0 backgrounds, 0 corrupt: 100%|██████████| 4/4 [00:00<?, ?it/s]
+Plotting labels to runs/detect/train10/labels.jpg... 
+optimizer: 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... 
+optimizer: AdamW(lr=0.000119, momentum=0.9) with parameter groups 57 weight(decay=0.0), 64 weight(decay=0.0005), 63 bias(decay=0.0)
+Image sizes 640 train, 640 val
+Using 0 dataloader workers
+Logging results to runs/detect/train10
+Starting training for 100 epochs...
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+  0%|          | 0/1 [00:03<?, ?it/s]
+
+______________________________________________________________________________________________________________________________________________________

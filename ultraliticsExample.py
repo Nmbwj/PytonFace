@@ -1,24 +1,20 @@
-import torch
+import cv2
+from PIL import Image
+
 from ultralytics import YOLO
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = YOLO("model.pt")
+# accepts all formats - image/dir/Path/URL/video/PIL/ndarray. 0 for webcam
+results = model.predict(source="0")
+results = model.predict(source="folder", show=True)  # Display preds. Accepts all YOLO predict arguments
 
-print("Device named in torch: {}".format(device))
+# from PIL
+im1 = Image.open("bus.jpg")
+results = model.predict(source=im1, save=True)  # save plotted images
 
-# Create a new YOLO model from scratch
-#model = YOLO("yolov8n.yaml")
+# from ndarray
+im2 = cv2.imread("bus.jpg")
+results = model.predict(source=im2, save=True, save_txt=True)  # save predictions as labels
 
-# Load a pretrained YOLO model (recommended for training)
-model = YOLO("yolov8n.pt")
-
-# Train the model using the 'coco8.yaml' dataset for 3 epochs
-#results = model.train(data="coco8.yaml", epochs=3)
-
-# Evaluate the model's performance on the validation set
-#results = model.val()
-
-# Perform object detection on an image using the model
-results = model(source="0",show=True)
-
-# Export the model to ONNX format
-#success = model.export(format="onnx")
+# from list of PIL/ndarray
+results = model.predict(source=[im1, im2])
